@@ -175,6 +175,68 @@ function getStats(posts) {
     return { categories, tags, archives };
 }
 
+// 全局统计数据（从API获取的实时数据）
+let globalStats = {
+    total_posts: 0,
+    total_views: 0,
+    total_words: 0,
+    total_categories: 0,
+    total_tags: 0
+};
+
+// 从API获取实时统计数据
+async function loadStatsFromApi() {
+    try {
+        const res = await fetch('/api/stats', {
+            method: 'GET',
+            headers: { 'Accept': 'application/json', 'Cache-Control': 'no-cache' }
+        });
+        if (res.ok) {
+            const result = await res.json();
+            if (result && result.success && result.data) {
+                globalStats = result.data;
+                console.log(`✅ 已从 API 获取统计数据: ${globalStats.total_posts} 文章 / ${globalStats.total_views.toLocaleString()} 阅读`);
+                // 更新页面上的统计显示
+                updateStatsDisplay();
+            }
+        }
+    } catch (e) {
+        console.warn('获取统计 API 失败:', e);
+    }
+}
+
+// 更新页面上的统计显示
+function updateStatsDisplay() {
+    // 更新侧边栏作者卡片统计
+    const statValues = document.querySelectorAll('.author-stats .stat-value');
+    if (statValues.length >= 4) {
+        statValues[0].textContent = globalStats.total_posts;
+        statValues[1].textContent = globalStats.total_categories;
+        statValues[2].textContent = globalStats.total_tags;
+        statValues[3].textContent = globalStats.total_views.toLocaleString();
+    }
+    
+    // 更新关于页统计
+    updateAboutStats();
+}
+
+// 定时刷新统计数据（每30秒）
+let statsRefreshInterval = null;
+
+function startStatsRefresh() {
+    if (statsRefreshInterval) clearInterval(statsRefreshInterval);
+    statsRefreshInterval = setInterval(() => {
+        loadStatsFromApi();
+    }, 30000);
+}
+
+function stopStatsRefresh() {
+    if (statsRefreshInterval) {
+        clearInterval(statsRefreshInterval);
+        statsRefreshInterval = null;
+    }
+}
+
 // ========== 页面组件 ==========
 
 // 导航栏
@@ -813,13 +875,15 @@ function router() {
             break;
         case 'about':
             renderAbout();
-            updateAboutStats();
             break;
         default:
             renderPostList(allPosts);
     }
     
     renderFooter();
+    
+    // 每次路由变化时，重新从 API 获取最新的统计数据
+    loadStatsFromApi();
 }
 
 // 页脚
@@ -1032,6 +1096,9 @@ function renderServerOfflinePage() {
 function _finishInitBlog() {
     // 数据加载完成后，同步更新关于页统计
     updateAboutStats();
+    // 加载并启动统计数据实时刷新
+    loadStatsFromApi();
+    startStatsRefresh();
     // 初始路由
     if (!window.location.hash) {
         window.location.hash = '#/home';
