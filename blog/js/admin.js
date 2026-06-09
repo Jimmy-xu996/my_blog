@@ -15,6 +15,15 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+// 安全地转义 JavaScript 字符串字面量（用于 onclick 等内联 JS 上下文）
+// 不同于 escapeHtml：HTML 转义不能阻止 JS 代码注入
+function escapeJsString(text) {
+    return String(text || '').replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'").replace(/"/g, '\\"')
+        .replace(/\n/g, '\\n').replace(/\r/g, '\\r')
+        .replace(/\t/g, '\\t').replace(/</g, '\\x3c');
+}
+
 function getTodayDate() {
     const date = new Date();
     const year = date.getFullYear();
@@ -645,26 +654,44 @@ function renderResources() {
         const color = getFileCategoryColor(r.category);
         const url = '/uploads/' + r.savedName;
         const size = formatFileSize(r.size || 0);
+        const ext = (r.originalName.split('.').pop() || '').toUpperCase();
 
-        return `<div class="admin-resource-card" data-id="${r.id}">
+        return `<div class="admin-resource-card" data-id="${r.id}"
+                      data-resource-url="${escapeHtml(url)}"
+                      data-resource-name="${escapeHtml(r.originalName)}"
+                      data-resource-category="${escapeHtml(r.category)}">
             ${isImage
-                ? `<img class="admin-resource-thumb" src="${url}" alt="${r.originalName}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                   <div class="admin-resource-thumb-placeholder" style="display:none">${icon}<span>${r.originalName.split('.').pop().toUpperCase()}</span></div>`
-                : `<div class="admin-resource-thumb-placeholder">${icon}<span>${r.originalName.split('.').pop().toUpperCase()}</span></div>`
+                ? `<img class="admin-resource-thumb" src="${escapeHtml(url)}" alt="${escapeHtml(r.originalName)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                   <div class="admin-resource-thumb-placeholder" style="display:none">${escapeHtml(icon)}<span>${escapeHtml(ext)}</span></div>`
+                : `<div class="admin-resource-thumb-placeholder">${escapeHtml(icon)}<span>${escapeHtml(ext)}</span></div>`
             }
             <div class="admin-resource-info">
-                <div class="admin-resource-name" title="${r.originalName}">${r.originalName}</div>
+                <div class="admin-resource-name" title="${escapeHtml(r.originalName)}">${escapeHtml(r.originalName)}</div>
                 <div class="admin-resource-meta">
-                    <span style="color:${color};font-size:10px;font-weight:600;text-transform:uppercase">${r.category}</span>
-                    <span>${size}</span>
+                    <span style="color:${escapeHtml(color)};font-size:10px;font-weight:600;text-transform:uppercase">${escapeHtml(r.category)}</span>
+                    <span>${escapeHtml(size)}</span>
                 </div>
             </div>
             <div class="admin-resource-actions">
-                <button class="btn-insert" onclick="insertResource('${url}', '${r.originalName.replace(/'/g, "\\'")}', '${r.category}')">插入</button>
-                <button class="btn-delete" onclick="confirmDeleteResource(${r.id}, '${r.originalName.replace(/'/g, "\\'")}')">删除</button>
+                <button class="btn-insert" data-action="insert">插入</button>
+                <button class="btn-delete" data-action="delete">删除</button>
             </div>
         </div>`;
     }).join('');
+
+    // 事件绑定替代内联 onclick（避免将用户数据拼接到 JS 代码中）
+    grid.querySelectorAll('.admin-resource-card').forEach(function(card) {
+        const url = card.getAttribute('data-resource-url');
+        const name = card.getAttribute('data-resource-name');
+        const category = card.getAttribute('data-resource-category');
+        const id = parseInt(card.getAttribute('data-id'));
+        card.querySelector('[data-action="insert"]').addEventListener('click', function() {
+            insertResource(url, name, category);
+        });
+        card.querySelector('[data-action="delete"]').addEventListener('click', function() {
+            confirmDeleteResource(id, name);
+        });
+    });
 }
 
 /** 从文章编辑器工具栏打开资源选择器（切换到资源管理 tab） */
@@ -866,13 +893,20 @@ function renderTagSelector() {
 
     container.innerHTML = allTags.map(tag => {
         const isSelected = selectedTagNames.includes(tag.name);
-        const color = tag.color || '#2563eb';
+        const color = tag.color || '#10b981';
         return `<span class="admin-tag ${isSelected ? 'selected' : ''}" 
                   style="background: ${color};"
-                  onclick="toggleTag('${escapeHtml(tag.name)}', this)">
+                  data-tag-name="${escapeHtml(tag.name)}">
                   🏷 ${escapeHtml(tag.name)}
                 </span>`;
     }).join('');
+
+    // 使用事件绑定替代内联 onclick（避免把用户数据拼接到 JS 代码中）
+    container.querySelectorAll('[data-tag-name]').forEach(function(el) {
+        el.addEventListener('click', function() {
+            toggleTag(this.getAttribute('data-tag-name'), this);
+        });
+    });
 
     renderSelectedTagsDisplay();
 }
@@ -896,8 +930,14 @@ function renderSelectedTagsDisplay() {
         return;
     }
     container.innerHTML = selectedTagNames.map(name =>
-        `<span class="admin-tag" onclick="removeSelectedTag('${escapeHtml(name)}')">${escapeHtml(name)}</span>`
+        `<span class="admin-tag" data-tag-name="${escapeHtml(name)}">${escapeHtml(name)}</span>`
     ).join('');
+
+    container.querySelectorAll('[data-tag-name]').forEach(function(el) {
+        el.addEventListener('click', function() {
+            removeSelectedTag(this.getAttribute('data-tag-name'));
+        });
+    });
 }
 
 function removeSelectedTag(name) {

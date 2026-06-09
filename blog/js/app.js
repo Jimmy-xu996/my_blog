@@ -68,13 +68,18 @@ function parseMarkdown(md) {
     
     html = result.join('\n');
     
-    // 处理列表
-    html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
-    html = html.replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>');
-    
-    // 处理无序列表组
-    html = html.replace(/(<li>.*?<\/li>\n?)+/g, function(match) {
-        return '<ul>\n' + match + '</ul>\n';
+    // 处理列表（区分有序/无序列表，用前缀标记区分类型）
+    html = html.replace(/^- (.+)$/gm, '__UL_ITEM__<li>$1</li>');
+    html = html.replace(/^(\d+)\. (.+)$/gm, '__OL_ITEM__<li>$2</li>');
+
+    // 合并连续的无序列表项为 <ul>
+    html = html.replace(/(__UL_ITEM__<li>.*?<\/li>\n?)+/g, function(match) {
+        return '<ul>\n' + match.replace(/__UL_ITEM__/g, '') + '</ul>\n';
+    });
+
+    // 合并连续的有序列表项为 <ol>
+    html = html.replace(/(__OL_ITEM__<li>.*?<\/li>\n?)+/g, function(match) {
+        return '<ol>\n' + match.replace(/__OL_ITEM__/g, '') + '</ol>\n';
     });
     
     // 处理段落（简单处理：不在标签内的连续文本）
@@ -373,18 +378,18 @@ function renderPostCard(post) {
     return `
         <article class="post-card">
             <h2 class="post-title">
-                <a href="#/post/${post.id}">${post.title}</a>
+                <a href="#/post/${post.id}">${escapeHtml(post.title)}</a>
             </h2>
             <div class="post-meta">
                 <span><span class="icon">📅</span>${formatDate(post.date)}</span>
-                <span><span class="icon">👁</span>${post.views.toLocaleString()} 阅读</span>
-                <span><span class="icon">⏱</span>${post.readTime} 分钟</span>
-                <span><span class="icon">📝</span>${post.wordCount.toLocaleString()} 字</span>
+                <span><span class="icon">👁</span>${(post.views || 0).toLocaleString()} 阅读</span>
+                <span><span class="icon">⏱</span>${post.readTime || 0} 分钟</span>
+                <span><span class="icon">📝</span>${(post.wordCount || 0).toLocaleString()} 字</span>
             </div>
-            <div class="post-summary">${post.summary}</div>
+            <div class="post-summary">${escapeHtml(post.summary)}</div>
             <div class="post-tags">
-                <span class="category-badge">${post.category}</span>
-                ${post.tags.map(tag => `<a href="#/tag/${encodeURIComponent(tag)}" class="tag">${tag}</a>`).join('')}
+                <span class="category-badge">${escapeHtml(post.category)}</span>
+                ${post.tags.map(tag => `<a href="#/tag/${encodeURIComponent(tag)}" class="tag">${escapeHtml(tag)}</a>`).join('')}
                 <a href="#/post/${post.id}" class="read-more">阅读全文 →</a>
             </div>
         </article>
@@ -399,8 +404,8 @@ function renderPostList(posts, title, subtitle) {
     if (title) {
         headerHtml = `
             <div class="page-header">
-                <h1 class="page-title">${title}</h1>
-                <p class="page-subtitle">${subtitle || ''}</p>
+                <h1 class="page-title">${escapeHtml(title)}</h1>
+                <p class="page-subtitle">${escapeHtml(subtitle || '')}</p>
             </div>
         `;
     }
@@ -444,13 +449,13 @@ function renderPostDetail(postId) {
     
     content.innerHTML = `
         <article class="post-detail">
-            <h1 class="post-title">${post.title}</h1>
+            <h1 class="post-title">${escapeHtml(post.title)}</h1>
             <div class="post-meta">
                 <span><span class="icon">📅</span>${formatDate(post.date)}</span>
-                <span><span class="icon">📂</span><a href="#/category/${encodeURIComponent(post.category)}">${post.category}</a></span>
-                <span><span class="icon">👁</span>${post.views.toLocaleString()} 阅读</span>
-                <span><span class="icon">⏱</span>${post.readTime} 分钟</span>
-                <span><span class="icon">📝</span>${post.wordCount.toLocaleString()} 字</span>
+                <span><span class="icon">📂</span><a href="#/category/${encodeURIComponent(post.category)}">${escapeHtml(post.category)}</a></span>
+                <span><span class="icon">👁</span>${(post.views || 0).toLocaleString()} 阅读</span>
+                <span><span class="icon">⏱</span>${post.readTime || 0} 分钟</span>
+                <span><span class="icon">📝</span>${(post.wordCount || 0).toLocaleString()} 字</span>
             </div>
             <div class="post-content">
                 ${parseMarkdown(post.content)}
@@ -458,7 +463,7 @@ function renderPostDetail(postId) {
             <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
                 <div class="post-tags">
                     <strong style="color: #4a5568;">标签：</strong>
-                    ${post.tags.map(tag => `<a href="#/tag/${encodeURIComponent(tag)}" class="tag">${tag}</a>`).join('')}
+                    ${post.tags.map(tag => `<a href="#/tag/${encodeURIComponent(tag)}" class="tag">${escapeHtml(tag)}</a>`).join('')}
                 </div>
             </div>
         </article>
@@ -499,7 +504,7 @@ function renderCategories() {
         const catPosts = allPosts.filter(p => p.category === cat.name);
         html += `
             <div class="sidebar-widget" style="cursor: pointer; margin-bottom: 0; padding: 20px; border-left: 4px solid ${escapeHtml(cat.color)};"
-                 onclick="window.location.hash = '#/category/${encodeURIComponent(cat.name)}'">
+                 data-category-hash="#/category/${encodeURIComponent(cat.name)}">
                 <div class="widget-title" style="display:flex;align-items:center;gap:8px;">
                     <span style="font-size:20px">${escapeHtml(cat.icon || '📂')}</span>
                     <span>${escapeHtml(cat.name)}</span>
@@ -522,6 +527,13 @@ function renderCategories() {
 
     html += '</div>';
     content.innerHTML = html;
+
+    // 使用事件委托绑定分类卡片点击（避免在 onclick 中内联字符串，减少 XSS）
+    content.querySelectorAll('[data-category-hash]').forEach(function(el) {
+        el.addEventListener('click', function() {
+            window.location.hash = this.getAttribute('data-category-hash');
+        });
+    });
 }
 
 // 标签页面
