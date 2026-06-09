@@ -1,0 +1,141 @@
+[
+  {
+    "id": 1,
+    "title": "C++入门指南 - 从零基础到第一个程序",
+    "date": "2026-05-15",
+    "category": "C++",
+    "tags": [
+      "C++",
+      "入门",
+      "基础"
+    ],
+    "author": "博主",
+    "wordCount": 3200,
+    "readTime": 12,
+    "views": 15620,
+    "summary": "本文将带领你从零开始学习 C++，了解 C++ 的发展历史、语言特点，并编写你的第一个 C++ 程序。无论你是编程小白还是从其他语言转过来的开发者，都能在这篇文章中找到入门的方向。",
+    "content": "# C++入门指南\n\n## 1. C++ 概述\n\nC++ 是一种通用的高级编程语言，由 Bjarne Stroustrup 于 1979 年在贝尔实验室开始设计开发。它是 C 语言的扩展，增加了面向对象、泛型编程等特性。\n\n### 1.1 C++ 的特点\n\n- **高效性**：C++ 是一种编译型语言，运行效率极高\n- **跨平台**：支持 Windows、Linux、macOS 等多平台\n- **面向对象**：支持封装、继承、多态三大特性\n- **泛型编程**：通过模板实现类型无关的编程\n- **标准库丰富**：STL 提供了大量常用数据结构和算法\n\n### 1.2 开发环境搭建\n\n在 Linux 下，可以通过以下命令安装 g++ 编译器：\n\n```bash\nsudo apt update\nsudo apt install g++\n```\n\n安装完成后，可以通过 `g++ --version` 查看版本。\n\n## 2. 第一个 C++ 程序\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Hello, World!\" << endl;\n    return 0;\n}\n```\n\n### 2.1 编译运行\n\n```bash\ng++ hello.cpp -o hello\n./hello\n```\n\n输出：`Hello, World!`\n\n### 2.2 代码解析\n\n- `#include <iostream>`：包含输入输出流头文件\n- `using namespace std;`：使用标准命名空间\n- `int main()`：程序入口函数\n- `cout`：标准输出流对象\n- `endl`：换行符\n\n## 3. 基本数据类型\n\n| 类型 | 大小 | 说明 |\n|------|------|------|\n| int | 4字节 | 整型 |\n| float | 4字节 | 单精度浮点型 |\n| double | 8字节 | 双精度浮点型 |\n| char | 1字节 | 字符型 |\n| bool | 1字节 | 布尔型 |\n\n## 4. 总结\n\n通过本文的学习，你应该已经掌握了 C++ 的基础环境搭建和第一个程序的编写。在后续的文章中，我们将继续深入学习 C++ 的更多特性。"
+  },
+  {
+    "id": 2,
+    "title": "Linux 线程同步机制详解",
+    "date": "2026-05-10",
+    "category": "Linux",
+    "tags": [
+      "Linux",
+      "多线程",
+      "线程同步",
+      "互斥锁"
+    ],
+    "author": "博主",
+    "wordCount": 5800,
+    "readTime": 25,
+    "views": 23450,
+    "summary": "多线程编程中，线程同步是一个核心问题。本文将详细介绍 Linux 下常用的线程同步机制，包括互斥锁、条件变量、读写锁、信号量等，并通过实例代码演示它们的使用方法和适用场景。",
+    "content": "# Linux 线程同步机制详解\n\n## 1. 线程同步概述\n\n当多个线程同时访问共享资源时，如果不进行同步控制，就会产生数据竞争问题。线程同步的目的就是确保多个线程能够安全、正确地访问共享资源。\n\n## 2. 互斥锁（Mutex）\n\n互斥锁是最常用的线程同步机制。它保证同一时间只有一个线程可以访问被保护的资源。\n\n```c\n#include <pthread.h>\n\npthread_mutex_t mutex;\n\n// 初始化互斥锁\npthread_mutex_init(&mutex, NULL);\n\n// 加锁\npthread_mutex_lock(&mutex);\n// 访问共享资源\n// ...\n// 解锁\npthread_mutex_unlock(&mutex);\n```\n\n### 2.1 互斥锁示例\n\n```c\n#include <stdio.h>\n#include <pthread.h>\n\nint count = 0;\npthread_mutex_t mutex;\n\nvoid* increment(void* arg) {\n    for (int i = 0; i < 1000; i++) {\n        pthread_mutex_lock(&mutex);\n        count++;\n        pthread_mutex_unlock(&mutex);\n    }\n    return NULL;\n}\n\nint main() {\n    pthread_t t1, t2;\n    pthread_mutex_init(&mutex, NULL);\n    \n    pthread_create(&t1, NULL, increment, NULL);\n    pthread_create(&t2, NULL, increment, NULL);\n    \n    pthread_join(t1, NULL);\n    pthread_join(t2, NULL);\n    \n    printf(\"count = %d\\n\", count);\n    pthread_mutex_destroy(&mutex);\n    return 0;\n}\n```\n\n## 3. 条件变量（Condition Variable）\n\n条件变量用于线程间的通信，当某个条件不满足时，线程会挂起等待；当条件满足时，唤醒等待的线程。\n\n```c\npthread_cond_t cond;\npthread_mutex_t mutex;\n\n// 等待条件\npthread_mutex_lock(&mutex);\npthread_cond_wait(&cond, &mutex);\npthread_mutex_unlock(&mutex);\n\n// 唤醒等待线程\npthread_cond_signal(&cond);\n```\n\n## 4. 读写锁（Read-Write Lock）\n\n读写锁允许多个线程同时读取共享资源，但只允许一个线程写入。在读多写少的场景下，读写锁的性能优于互斥锁。\n\n```c\npthread_rwlock_t rwlock;\n\n// 读加锁\npthread_rwlock_rdlock(&rwlock);\n// 写加锁\npthread_rwlock_wrlock(&rwlock);\n// 解锁\npthread_rwlock_unlock(&rwlock);\n```\n\n## 5. 信号量（Semaphore）\n\n信号量是一种更通用的同步机制，可以用于控制同时访问共享资源的线程数量。\n\n## 6. 总结\n\n| 机制 | 适用场景 | 特点 |\n|------|----------|------|\n| 互斥锁 | 独占资源访问 | 简单、常用 |\n| 条件变量 | 线程间通信 | 配合互斥锁使用 |\n| 读写锁 | 读多写少 | 读并发、写独占 |\n| 信号量 | 控制并发数量 | 更灵活 |"
+  },
+  {
+    "id": 3,
+    "title": "CMake 保姆级教程",
+    "date": "2026-04-28",
+    "category": "C++",
+    "tags": [
+      "C++",
+      "CMake",
+      "构建工具"
+    ],
+    "author": "博主",
+    "wordCount": 6500,
+    "readTime": 30,
+    "views": 18920,
+    "summary": "CMake 是目前最流行的 C/C++ 项目构建工具。本文从基础开始，详细介绍 CMake 的使用方法，包括基本语法、常用命令、项目组织方式、第三方库集成等内容，帮助你快速掌握 CMake。",
+    "content": "# CMake 保姆级教程\n\n## 1. CMake 概述\n\nCMake 是一个跨平台的项目构建工具，它可以生成各种平台的构建脚本（如 Makefile、Visual Studio 项目等）。\n\n### 1.1 为什么使用 CMake\n\n- **跨平台**：支持 Linux、Windows、macOS\n- **简化构建**：自动生成 Makefile\n- **管理大型项目**：模块化组织\n- **可扩展**：支持自定义模块\n\n## 2. 基础使用\n\n### 2.1 最简单的 CMakeLists.txt\n\n```cmake\ncmake_minimum_required(VERSION 3.0)\nproject(HelloWorld)\nadd_executable(hello main.cpp)\n```\n\n### 2.2 构建流程\n\n```bash\nmkdir build\ncd build\ncmake ..\nmake\n```\n\n## 3. 常用命令\n\n### 3.1 设置 C++ 标准\n\n```cmake\nset(CMAKE_CXX_STANDARD 11)\nset(CMAKE_CXX_STANDARD_REQUIRED ON)\n```\n\n### 3.2 添加源文件\n\n```cmake\nset(SRC_LIST main.cpp utils.cpp)\nadd_executable(app ${SRC_LIST})\n```\n\n### 3.3 包含头文件目录\n\n```cmake\ninclude_directories(${PROJECT_SOURCE_DIR}/include)\n```\n\n### 3.4 链接库文件\n\n```cmake\nlink_directories(${PROJECT_SOURCE_DIR}/lib)\ntarget_link_libraries(app pthread)\n```\n\n## 4. 项目组织\n\n典型的项目目录结构：\n\n```\nproject/\n├── CMakeLists.txt\n├── src/\n│   ├── CMakeLists.txt\n│   ├── main.cpp\n│   └── utils/\n├── include/\n│   └── utils/\n├── lib/\n└── build/\n```\n\n## 5. 总结\n\nCMake 是现代 C/C++ 开发的必备工具，掌握它可以大大提高项目构建和管理的效率。"
+  },
+  {
+    "id": 4,
+    "title": "Qt 入门教程 - 第一个 GUI 程序",
+    "date": "2026-04-20",
+    "category": "HTTP",
+    "tags": [
+      "HTTP",
+      "GUI",
+      "图形界面"
+    ],
+    "author": "博主",
+    "wordCount": 4200,
+    "readTime": 18,
+    "views": 12560,
+    "summary": "Qt 是一个跨平台的 C++ GUI 开发框架。本文将带你从零开始学习 Qt，了解 Qt 的基本概念、信号槽机制，并编写你的第一个 Qt GUI 程序。",
+    "content": "# Qt 入门教程\n\n## 1. Qt 概述\n\nQt 是一个跨平台的 C++ 应用程序开发框架，广泛用于 GUI 应用程序开发。\n\n### 1.1 Qt 的特点\n\n- 跨平台（Windows、Linux、macOS、嵌入式）\n- 丰富的 GUI 组件\n- 信号槽机制\n- 完善的文档\n\n## 2. 第一个 Qt 程序\n\n```cpp\n#include <QApplication>\n#include <QLabel>\n#include <QPushButton>\n#include <QVBoxLayout>\n#include <QWidget>\n\nint main(int argc, char* argv[]) {\n    QApplication app(argc, argv);\n    \n    QWidget window;\n    window.setWindowTitle(\"Hello Qt\");\n    \n    QLabel* label = new QLabel(\"Hello, World!\");\n    QPushButton* button = new QPushButton(\"Click Me\");\n    \n    QVBoxLayout* layout = new QVBoxLayout();\n    layout->addWidget(label);\n    layout->addWidget(button);\n    \n    window.setLayout(layout);\n    window.resize(300, 200);\n    window.show();\n    \n    return app.exec();\n}\n```\n\n## 3. 信号槽机制\n\n信号槽是 Qt 的核心机制，用于对象间的通信。\n\n```cpp\nQObject::connect(button, SIGNAL(clicked()), &app, SLOT(quit()));\n\n// 新式写法\nQObject::connect(button, &QPushButton::clicked, &app, &QApplication::quit);\n```\n\n## 4. 总结\n\nQt 提供了强大的 GUI 开发能力，配合信号槽机制可以轻松实现各种复杂的交互逻辑。"
+  },
+  {
+    "id": 5,
+    "title": "数据结构 - 链表的实现与应用",
+    "date": "2026-04-15",
+    "category": "数据结构",
+    "tags": [
+      "数据结构",
+      "链表",
+      "算法"
+    ],
+    "author": "博主",
+    "wordCount": 5200,
+    "readTime": 22,
+    "views": 9870,
+    "summary": "链表是最基础的数据结构之一。本文将详细介绍单链表、双链表、循环链表的实现方法，并使用 C++ 编写完整的链表操作代码，包括插入、删除、查找等操作。",
+    "content": "# 数据结构 - 链表\n\n## 1. 链表概述\n\n链表是一种通过指针连接节点的线性数据结构，每个节点包含数据和指向下一个节点的指针。\n\n## 2. 单链表实现\n\n```cpp\nstruct Node {\n    int data;\n    Node* next;\n    Node(int val) : data(val), next(nullptr) {}\n};\n\nclass LinkedList {\nprivate:\n    Node* head;\npublic:\n    LinkedList() : head(nullptr) {}\n    \n    void insert(int val) {\n        Node* newNode = new Node(val);\n        newNode->next = head;\n        head = newNode;\n    }\n    \n    void remove(int val) {\n        Node** curr = &head;\n        while (*curr) {\n            if ((*curr)->data == val) {\n                Node* temp = *curr;\n                *curr = (*curr)->next;\n                delete temp;\n                return;\n            }\n            curr = &(*curr)->next;\n        }\n    }\n    \n    void print() {\n        Node* curr = head;\n        while (curr) {\n            cout << curr->data << \" -> \";\n            curr = curr->next;\n        }\n        cout << \"null\" << endl;\n    }\n};\n```\n\n## 3. 双链表\n\n双链表每个节点包含指向前驱和后继的指针，可以双向遍历。\n\n```cpp\nstruct DNode {\n    int data;\n    DNode* prev;\n    DNode* next;\n};\n```\n\n## 4. 时间复杂度\n\n| 操作 | 平均 | 最坏 |\n|------|------|------|\n| 访问 | O(n) | O(n) |\n| 搜索 | O(n) | O(n) |\n| 插入 | O(1) | O(1) |\n| 删除 | O(1) | O(n) |\n\n## 5. 总结\n\n链表适合频繁插入删除的场景，但随机访问效率较低。理解链表的实现是学习更复杂数据结构的基础。"
+  },
+  {
+    "id": 6,
+    "title": "设计模式 - 单例模式详解",
+    "date": "2026-04-10",
+    "category": "TCP/IP",
+    "tags": [
+      "设计模式",
+      "MQTT学习",
+      "软件设计"
+    ],
+    "author": "博主",
+    "wordCount": 3800,
+    "readTime": 16,
+    "views": 15430,
+    "summary": "单例模式是最简单也是最常用的设计模式之一。本文将介绍单例模式的多种实现方式，包括懒汉式、饿汉式、线程安全版本，并讨论它们的优缺点和适用场景。",
+    "content": "# 设计模式 - 单例模式\n\n## 1. 单例模式概述\n\n单例模式确保一个类只有一个实例，并提供全局访问点。\n\n## 2. 饿汉式（线程安全）\n\n```cpp\nclass Singleton {\nprivate:\n    static Singleton* instance;\n    Singleton() {}\npublic:\n    static Singleton* getInstance() {\n        return instance;\n    }\n};\nSingleton* Singleton::instance = new Singleton();\n```\n\n## 3. 懒汉式（线程不安全）\n\n```cpp\nclass Singleton {\nprivate:\n    static Singleton* instance;\n    Singleton() {}\npublic:\n    static Singleton* getInstance() {\n        if (!instance) {\n            instance = new Singleton();\n        }\n        return instance;\n    }\n};\nSingleton* Singleton::instance = nullptr;\n```\n\n## 4. 线程安全的懒汉式\n\n```cpp\n#include <mutex>\n\nclass Singleton {\nprivate:\n    static Singleton* instance;\n    static std::mutex mtx;\n    Singleton() {}\npublic:\n    static Singleton* getInstance() {\n        std::lock_guard<std::mutex> lock(mtx);\n        if (!instance) {\n            instance = new Singleton();\n        }\n        return instance;\n    }\n};\n```\n\n## 5. C++11 最佳实现\n\n```cpp\nclass Singleton {\nprivate:\n    Singleton() {}\npublic:\n    static Singleton& getInstance() {\n        static Singleton instance;\n        return instance;\n    }\n};\n```\n\n这种实现利用了 C++11 的静态局部变量初始化线程安全特性，是最简洁的写法。\n\n## 6. 总结\n\n| 实现方式 | 线程安全 | 延迟加载 | 推荐 |\n|----------|----------|----------|------|\n| 饿汉式 | 是 | 否 | 简单场景 |\n| 懒汉式（加锁） | 是 | 是 | 一般 |\n| 静态局部变量 | 是 | 是 | 推荐 |"
+  },
+  {
+    "id": 7,
+    "title": "Linux 文件 IO 操作详解",
+    "date": "2026-04-05",
+    "category": "Linux",
+    "tags": [
+      "Linux",
+      "文件IO",
+      "系统调用",
+      "C++"
+    ],
+    "author": "博主",
+    "wordCount": 4800,
+    "readTime": 20,
+    "views": 11200,
+    "summary": "Linux 下的文件操作是系统编程的基础。本文将介绍 Linux 文件 IO 的核心系统调用，包括 open、read、write、close、lseek 等，并通过实例演示文件操作的常见场景。",
+    "content": "# Linux 文件 IO 操作\n\n## 1. 文件描述符\n\n在 Linux 中，所有打开的文件都通过文件描述符来引用。标准输入、输出、错误分别对应文件描述符 0、1、2。\n\n## 2. 核心系统调用\n\n### 2.1 open\n\n```c\n#include <fcntl.h>\n#include <unistd.h>\n\nint open(const char* pathname, int flags, mode_t mode);\n```\n\n### 2.2 read\n\n```c\nssize_t read(int fd, void* buf, size_t count);\n```\n\n### 2.3 write\n\n```c\nssize_t write(int fd, const void* buf, size_t count);\n```\n\n### 2.4 close\n\n```c\nint close(int fd);\n```\n\n## 3. 文件复制示例\n\n```c\n#include <stdio.h>\n#include <fcntl.h>\n#include <unistd.h>\n\nint main(int argc, char* argv[]) {\n    if (argc != 3) {\n        printf(\"Usage: %s <src> <dst>\\n\", argv[0]);\n        return 1;\n    }\n    \n    int fd_in = open(argv[1], O_RDONLY);\n    int fd_out = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0644);\n    \n    char buf[4096];\n    ssize_t n;\n    while ((n = read(fd_in, buf, sizeof(buf))) > 0) {\n        write(fd_out, buf, n);\n    }\n    \n    close(fd_in);\n    close(fd_out);\n    return 0;\n}\n```\n\n## 4. 文件偏移\n\n```c\noff_t lseek(int fd, off_t offset, int whence);\n```\n\nwhence 可选值：\n- SEEK_SET：从文件开头\n- SEEK_CUR：从当前位置\n- SEEK_END：从文件末尾\n\n## 5. 总结\n\n掌握文件 IO 系统调用是 Linux 系统编程的基础，理解这些底层操作有助于编写高效的文件处理程序。"
+  },
+  {
+    "id": 8,
+    "title": "C++ STL 容器详解 - vector",
+    "date": "2026-03-28",
+    "category": "C++",
+    "tags": [
+      "C++",
+      "STL",
+      "容器",
+      "vector"
+    ],
+    "author": "博主",
+    "wordCount": 4500,
+    "readTime": 19,
+    "views": 20150,
+    "summary": "vector 是 STL 中最常用的容器之一。本文将详细介绍 vector 的内部实现原理、常用接口、内存管理机制，并通过实例演示 vector 的最佳实践。",
+    "content": "# C++ STL vector 详解\n\n## 1. vector 概述\n\nvector 是一个动态数组，它可以自动管理内存，支持随机访问。\n\n## 2. 基本使用\n\n```cpp\n#include <vector>\n#include <iostream>\n\nint main() {\n    std::vector<int> v = {1, 2, 3, 4, 5};\n    \n    v.push_back(6);\n    v.pop_back();\n    \n    for (int i = 0; i < v.size(); i++) {\n        std::cout << v[i] << \" \";\n    }\n    \n    for (auto it = v.begin(); it != v.end(); ++it) {\n        std::cout << *it << \" \";\n    }\n    \n    for (int x : v) {\n        std::cout << x << \" \";\n    }\n    return 0;\n}\n```\n\n## 3. 内存管理\n\nvector 内部维护三个指针：\n- start：指向数据起始位置\n- finish：指向最后一个元素的下一个位置\n- end_of_storage：指向容量末尾\n\n## 4. 常用接口\n\n| 接口 | 说明 |\n|------|------|\n| push_back | 尾部插入 |\n| pop_back | 尾部删除 |\n| insert | 指定位置插入 |\n| erase | 删除指定元素 |\n| clear | 清空所有元素 |\n| size | 获取元素个数 |\n| capacity | 获取容量 |\n| reserve | 预分配容量 |\n| resize | 改变大小 |\n\n## 5. 性能优化\n\n```cpp\nstd::vector<int> v;\nv.reserve(100);  // 预分配空间，避免多次扩容\n```\n\n## 6. 总结\n\nvector 是日常开发中最常用的容器，理解它的内存管理和扩容机制有助于写出更高效的代码。"
+  }
+]
