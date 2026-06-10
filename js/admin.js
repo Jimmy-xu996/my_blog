@@ -81,6 +81,7 @@ function clearAuthSession() {
 
 /** 显示主界面（登录后调用）*/
 function showMainUI(username) {
+    _loginUIShown = false;
     document.getElementById('loginOverlay').style.display = 'none';
     const mainUI = document.getElementById('adminMainUI');
     mainUI.style.display = 'block';
@@ -89,7 +90,12 @@ function showMainUI(username) {
 }
 
 /** 显示登录界面 */
+let _loginUIShown = false;
 function showLoginUI() {
+    // 防止重复调用导致死循环
+    if (_loginUIShown) return;
+    _loginUIShown = true;
+    
     document.getElementById('loginOverlay').style.display = 'flex';
     document.getElementById('adminMainUI').style.display = 'none';
     clearAuthSession();
@@ -97,6 +103,12 @@ function showLoginUI() {
     document.getElementById('loginPassword').value = '';
     document.getElementById('loginError').textContent = '';
     document.getElementById('loginUsername').value = '';
+    // 重置登录按钮
+    const btnEl = document.getElementById('loginBtn');
+    if (btnEl) {
+        btnEl.disabled = false;
+        btnEl.textContent = '登 录';
+    }
     // 清空修改密码表单
     ['oldPassword', 'newPassword', 'confirmPassword'].forEach(id => {
         const el = document.getElementById(id);
@@ -226,6 +238,7 @@ async function initAdminApp(username) {
 
     // 标签编辑表单
     document.getElementById('tagForm').addEventListener('submit', handleTagSubmit);
+    document.getElementById('homepageForm').addEventListener('submit', handleHomepageSubmit);
 
     // 修改密码表单
     document.getElementById('changePasswordForm').addEventListener('submit', handleChangePassword);
@@ -330,6 +343,17 @@ async function handleLoginSubmit(event) {
 /** 处理退出登录 */
 async function handleLogout() {
     if (!confirm('确定要退出登录吗？')) return;
+    
+    // 停止所有定时刷新，防止退出后触发401循环
+    if (window._statsInterval) {
+        clearInterval(window._statsInterval);
+        window._statsInterval = null;
+    }
+    if (window._dataInterval) {
+        clearInterval(window._dataInterval);
+        window._dataInterval = null;
+    }
+    
     // 调用 logout API（让服务器清除会话）
     try {
         await fetch('/api/auth/logout', {
@@ -400,12 +424,19 @@ function switchTab(tab) {
 
     document.querySelectorAll('.admin-tab-content').forEach(content => {
         content.classList.remove('active');
+        content.style.display = 'none';
     });
-    document.getElementById('tab-' + tab).classList.add('active');
+    const tabEl = document.getElementById('tab-' + tab);
+    if (tabEl) {
+        tabEl.classList.add('active');
+        tabEl.style.display = 'block';
+    }
 
     if (tab === 'stats') renderStatsPage();
     if (tab === 'categories') renderCategories();
     if (tab === 'tags') renderTags();
+    if (tab === 'guestbook') loadAdminGuestbook();
+    if (tab === 'homepage') loadHomepageConfig();
 }
 
 // ========== 加载数据 ==========
@@ -427,6 +458,8 @@ async function loadCategories() {
         updateCategoryFilter();       // 更新文章列表的分类筛选器
         renderCategories();           // ⭐ 刷新分类管理页面的卡片列表（实时更新）
         updateSidebarStats();         // ⭐ 刷新侧边栏统计数
+        // 通知前台数据已更新（跨标签页同步）
+        notifyFrontendDataChange('categories');
     }
 }
 
@@ -437,6 +470,19 @@ async function loadTags() {
         renderTagSelector();          // 更新文章编辑表单的标签多选
         renderTags();                 // ⭐ 刷新标签管理页面的卡片列表（实时更新）
         updateSidebarStats();         // ⭐ 刷新侧边栏统计数
+        // 通知前台数据已更新（跨标签页同步）
+        notifyFrontendDataChange('tags');
+    }
+}
+
+// 通知前台数据已变更（跨标签页同步）
+function notifyFrontendDataChange(type) {
+    try {
+        const timestamp = Date.now();
+        localStorage.setItem('blog_data_changed', JSON.stringify({ type, timestamp }));
+        console.log(`📡 已通知前台: ${type} 数据已更新`);
+    } catch (e) {
+        console.warn('同步通知失败:', e);
     }
 }
 
@@ -481,7 +527,9 @@ async function loadAllResources() {
     if (res && res.success) {
         window.allResources = res.data || [];
         updateResourceCategoryStats();
-        if (document.getElementById('tab-resources').style.display !== 'none') {
+        // 无论当前是否在资源管理tab，都尝试渲染（如果DOM存在）
+        const grid = document.getElementById('resourceGrid');
+        if (grid) {
             renderResources();
         }
     }
@@ -786,11 +834,11 @@ function updateCategoryFilter() {
     const select = document.getElementById('categoryFilter');
     if (!select) return;
 
-    const categories = new Set();
-    allAdminPosts.forEach(p => { if (p.category) categories.add(p.category); });
-
+    // 使用分类管理中的数据，与分类管理实时同步
+    const categories = allCategories.map(c => c.name).filter(Boolean);
+    
     select.innerHTML = '<option value="">全部分类</option>';
-    Array.from(categories).sort().forEach(cat => {
+    categories.sort().forEach(cat => {
         select.innerHTML += `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`;
     });
 }
@@ -1314,6 +1362,134 @@ function renderTags() {
 
     // 绑定拖拽事件
     attachDragAndDrop(container, 'tag');
+}
+
+// ========== 留言管理 ==========
+async function loadAdminGuestbook() {
+    const container = document.getElementById('adminGuestbookList');
+    if (!container) return;
+    
+    try {
+        const response = await apiRequest('/api/guestbook');
+        if (response && response.success) {
+            renderAdminGuestbook(response.data);
+        } else {
+            container.innerHTML = '<p style="text-align:center; color:#9ca3af; padding:20px;">暂无留言</p>';
+        }
+    } catch (e) {
+        container.innerHTML = '<p style="text-align:center; color:#ef4444; padding:20px;">加载失败</p>';
+    }
+}
+
+function renderAdminGuestbook(messages) {
+    const container = document.getElementById('adminGuestbookList');
+    if (!container) return;
+    
+    if (!messages || messages.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#9ca3af; padding:20px;">暂无留言</p>';
+        return;
+    }
+    
+    container.innerHTML = messages.map(msg => `
+        <div class="admin-card" style="margin-bottom:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <strong>${escapeHtml(msg.author || '匿名用户')}${msg.email ? ` <span style="color:#94a3b8;font-weight:normal;font-size:12px;">(${escapeHtml(msg.email)})</span>` : ''}</strong>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="color:#94a3b8; font-size:12px;">${msg.created_at || ''}</span>
+                    <button class="admin-btn admin-btn-danger" style="padding:4px 10px; font-size:12px;" onclick="deleteGuestbookMessage(${msg.id})">删除</button>
+                </div>
+            </div>
+            <p style="color:#475569;">${escapeHtml(msg.content)}</p>
+        </div>
+    `).join('');
+}
+
+async function deleteGuestbookMessage(msgId) {
+    if (!confirm('确定要删除这条留言吗？')) return;
+    
+    const token = getAuthToken();
+    // 调试模式下可能无 token，继续发送请求（后端会处理）
+    
+    try {
+        const response = await fetch(`/api/guestbook/${msgId}`, {
+            method: 'DELETE',
+            headers: token ? {
+                'Authorization': `Bearer ${token}`
+            } : {}
+        });
+        
+        if (!response.ok) {
+            const err = await response.json().catch(() => ({}));
+            showToast(err.error || '删除失败', 'error');
+            return;
+        }
+        
+        const result = await response.json();
+        if (result.success) {
+            showToast('留言已删除', 'success');
+            loadAdminGuestbook();
+        } else {
+            showToast(result.error || '删除失败', 'error');
+        }
+    } catch (e) {
+        console.error('删除留言失败:', e);
+        showToast('删除失败，请刷新页面后重试', 'error');
+    }
+}
+
+// ========== 首页管理 ==========
+async function loadHomepageConfig() {
+    try {
+        const response = await apiRequest('/api/homepage');
+        if (response && response.success) {
+            const d = response.data || {};
+            document.getElementById('hpTitle').value = d.title || '';
+            document.getElementById('hpSubtitle').value = d.subtitle || '';
+            document.getElementById('hpAnnouncement').value = d.announcement || '';
+            document.getElementById('hpBannerType').value = d.banner_type || 'gradient';
+            document.getElementById('hpBannerImage').value = d.banner_image || '';
+            document.getElementById('hpShowCategories').checked = d.show_categories !== false;
+            document.getElementById('hpShowTagsCloud').checked = d.show_tags_cloud === true;
+            document.getElementById('hpIntroTitle').value = d.intro_title || '';
+            document.getElementById('hpIntroText').value = d.intro_text || '';
+            document.getElementById('hpFeaturedPosts').value = (d.featured_posts || []).join(',');
+        }
+    } catch (e) {
+        console.error('加载首页配置失败:', e);
+    }
+}
+
+async function handleHomepageSubmit(e) {
+    e.preventDefault();
+    const data = {
+        title: document.getElementById('hpTitle').value.trim(),
+        subtitle: document.getElementById('hpSubtitle').value.trim(),
+        announcement: document.getElementById('hpAnnouncement').value.trim(),
+        banner_type: document.getElementById('hpBannerType').value,
+        banner_image: document.getElementById('hpBannerImage').value.trim(),
+        show_categories: document.getElementById('hpShowCategories').checked,
+        show_tags_cloud: document.getElementById('hpShowTagsCloud').checked,
+        intro_title: document.getElementById('hpIntroTitle').value.trim(),
+        intro_text: document.getElementById('hpIntroText').value.trim(),
+        featured_posts: (document.getElementById('hpFeaturedPosts').value.trim() || '')
+            .split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n))
+    };
+    
+    try {
+        const response = await apiRequest('/api/homepage', 'PUT', data);
+        if (response && response.success) {
+            showToast('首页配置已保存', 'success');
+            notifyFrontendDataChange('homepage');
+        } else {
+            showToast(response?.error || '保存失败', 'error');
+        }
+    } catch (e) {
+        showToast('保存失败', 'error');
+    }
+}
+
+function previewHomepage() {
+    window.open('/', '_blank');
 }
 
 // ========== 统计页面渲染 ==========

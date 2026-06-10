@@ -1281,7 +1281,7 @@
 }
 
 .admin-upload-inner {
-    pointer-events: none;
+    /* 移除 pointer-events: none，确保点击和拖拽都能正常工作 */
 }
 
 .admin-upload-zone input[type="file"] {

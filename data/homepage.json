@@ -1,0 +1,13 @@
+{
+  "title": "📚 技术博客专栏",
+  "subtitle": "专注于 C/C++、Linux 系统编程、数据结构与算法、设计模式等技术分享",
+  "announcement": "白日不到处，青春恰自来。苔花如米小，也学牡丹开。",
+  "banner_type": "gradient",
+  "banner_image": "",
+  "show_articles": false,
+  "show_categories": true,
+  "show_tags_cloud": false,
+  "intro_title": "关于本站",
+  "intro_text": "这里是一个专注于技术分享的个人博客，涵盖 C/C++、Linux 系统编程、数据结构、设计模式等领域。希望这些内容能帮助你更好地学习和成长。",
+  "featured_posts": []
+}

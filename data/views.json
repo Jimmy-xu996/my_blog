@@ -1,0 +1,37 @@
+{
+  "posts": {
+    "1": {
+      "views": 3,
+      "unique_visitors": [
+        "127.0.0.1"
+      ]
+    },
+    "8": {
+      "views": 1,
+      "unique_visitors": [
+        "127.0.0.1"
+      ]
+    },
+    "9": {
+      "views": 2,
+      "unique_visitors": [
+        "127.0.0.1"
+      ]
+    },
+    "6": {
+      "views": 1,
+      "unique_visitors": [
+        "127.0.0.1"
+      ]
+    },
+    "10": {
+      "views": 1,
+      "unique_visitors": [
+        "127.0.0.1"
+      ]
+    }
+  },
+  "visitors": [
+    "127.0.0.1"
+  ]
+}

@@ -5,16 +5,18 @@
     "date": "2026-05-15",
     "category": "C++",
     "tags": [
-      "C++",
-      "入门",
-      "基础"
+      "C++"
     ],
     "author": "博主",
     "wordCount": 3200,
     "readTime": 12,
     "views": 15620,
     "summary": "本文将带领你从零开始学习 C++，了解 C++ 的发展历史、语言特点，并编写你的第一个 C++ 程序。无论你是编程小白还是从其他语言转过来的开发者，都能在这篇文章中找到入门的方向。",
-    "content": "# C++入门指南\n\n## 1. C++ 概述\n\nC++ 是一种通用的高级编程语言，由 Bjarne Stroustrup 于 1979 年在贝尔实验室开始设计开发。它是 C 语言的扩展，增加了面向对象、泛型编程等特性。\n\n### 1.1 C++ 的特点\n\n- **高效性**：C++ 是一种编译型语言，运行效率极高\n- **跨平台**：支持 Windows、Linux、macOS 等多平台\n- **面向对象**：支持封装、继承、多态三大特性\n- **泛型编程**：通过模板实现类型无关的编程\n- **标准库丰富**：STL 提供了大量常用数据结构和算法\n\n### 1.2 开发环境搭建\n\n在 Linux 下，可以通过以下命令安装 g++ 编译器：\n\n```bash\nsudo apt update\nsudo apt install g++\n```\n\n安装完成后，可以通过 `g++ --version` 查看版本。\n\n## 2. 第一个 C++ 程序\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Hello, World!\" << endl;\n    return 0;\n}\n```\n\n### 2.1 编译运行\n\n```bash\ng++ hello.cpp -o hello\n./hello\n```\n\n输出：`Hello, World!`\n\n### 2.2 代码解析\n\n- `#include <iostream>`：包含输入输出流头文件\n- `using namespace std;`：使用标准命名空间\n- `int main()`：程序入口函数\n- `cout`：标准输出流对象\n- `endl`：换行符\n\n## 3. 基本数据类型\n\n| 类型 | 大小 | 说明 |\n|------|------|------|\n| int | 4字节 | 整型 |\n| float | 4字节 | 单精度浮点型 |\n| double | 8字节 | 双精度浮点型 |\n| char | 1字节 | 字符型 |\n| bool | 1字节 | 布尔型 |\n\n## 4. 总结\n\n通过本文的学习，你应该已经掌握了 C++ 的基础环境搭建和第一个程序的编写。在后续的文章中，我们将继续深入学习 C++ 的更多特性。"
+    "content": "# C++入门指南\n\n## 1. C++ 概述\n\nC++ 是一种通用的高级编程语言，由 Bjarne Stroustrup 于 1979 年在贝尔实验室开始设计开发。它是 C 语言的扩展，增加了面向对象、泛型编程等特性。\n\n### 1.1 C++ 的特点\n\n- **高效性**：C++ 是一种编译型语言，运行效率极高\n- **跨平台**：支持 Windows、Linux、macOS 等多平台\n- **面向对象**：支持封装、继承、多态三大特性\n- **泛型编程**：通过模板实现类型无关的编程\n- **标准库丰富**：STL 提供了大量常用数据结构和算法\n\n### 1.2 开发环境搭建\n\n在 Linux 下，可以通过以下命令安装 g++ 编译器：\n\n```bash\nsudo apt update\nsudo apt install g++\n```\n\n安装完成后，可以通过 `g++ --version` 查看版本。\n\n## 2. 第一个 C++ 程序\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Hello, World!\" << endl;\n    return 0;\n}\n```\n\n### 2.1 编译运行\n\n```bash\ng++ hello.cpp -o hello\n./hello\n```\n\n输出：`Hello, World!`\n\n### 2.2 代码解析\n\n- `#include <iostream>`：包含输入输出流头文件\n- `using namespace std;`：使用标准命名空间\n- `int main()`：程序入口函数\n- `cout`：标准输出流对象\n- `endl`：换行符\n\n## 3. 基本数据类型\n\n| 类型 | 大小 | 说明 |\n|------|------|------|\n| int | 4字节 | 整型 |\n| float | 4字节 | 单精度浮点型 |\n| double | 8字节 | 双精度浮点型 |\n| char | 1字节 | 字符型 |\n| bool | 1字节 | 布尔型 |\n\n## 4. 总结\n\n通过本文的学习，你应该已经掌握了 C++ 的基础环境搭建和第一个程序的编写。在后续的文章中，我们将继续深入学习 C++ 的更多特性。",
+    "likes": 1,
+    "liked_by": [
+      "127.0.0.1"
+    ]
   },
   {
     "id": 2,
@@ -41,8 +43,7 @@
     "category": "C++",
     "tags": [
       "C++",
-      "CMake",
-      "构建工具"
+      "CMake"
     ],
     "author": "博主",
     "wordCount": 6500,
@@ -57,9 +58,7 @@
     "date": "2026-04-20",
     "category": "HTTP",
     "tags": [
-      "HTTP",
-      "GUI",
-      "图形界面"
+      "HTTP"
     ],
     "author": "博主",
     "wordCount": 4200,
@@ -73,11 +72,7 @@
     "title": "数据结构 - 链表的实现与应用",
     "date": "2026-04-15",
     "category": "数据结构",
-    "tags": [
-      "数据结构",
-      "链表",
-      "算法"
-    ],
+    "tags": [],
     "author": "博主",
     "wordCount": 5200,
     "readTime": 22,
@@ -91,8 +86,7 @@
     "date": "2026-04-10",
     "category": "TCP/IP",
     "tags": [
-      "MQTT学习",
-      "软件设计"
+      "MQTT学习"
     ],
     "author": "博主",
     "wordCount": 3800,
@@ -125,10 +119,7 @@
     "date": "2026-03-28",
     "category": "C++",
     "tags": [
-      "C++",
-      "STL",
-      "容器",
-      "vector"
+      "C++"
     ],
     "author": "博主",
     "wordCount": 4500,
@@ -136,5 +127,36 @@
     "views": 20150,
     "summary": "vector 是 STL 中最常用的容器之一。本文将详细介绍 vector 的内部实现原理、常用接口、内存管理机制，并通过实例演示 vector 的最佳实践。",
     "content": "# C++ STL vector 详解\n\n## 1. vector 概述\n\nvector 是一个动态数组，它可以自动管理内存，支持随机访问。\n\n## 2. 基本使用\n\n```cpp\n#include <vector>\n#include <iostream>\n\nint main() {\n    std::vector<int> v = {1, 2, 3, 4, 5};\n    \n    v.push_back(6);\n    v.pop_back();\n    \n    for (int i = 0; i < v.size(); i++) {\n        std::cout << v[i] << \" \";\n    }\n    \n    for (auto it = v.begin(); it != v.end(); ++it) {\n        std::cout << *it << \" \";\n    }\n    \n    for (int x : v) {\n        std::cout << x << \" \";\n    }\n    return 0;\n}\n```\n\n## 3. 内存管理\n\nvector 内部维护三个指针：\n- start：指向数据起始位置\n- finish：指向最后一个元素的下一个位置\n- end_of_storage：指向容量末尾\n\n## 4. 常用接口\n\n| 接口 | 说明 |\n|------|------|\n| push_back | 尾部插入 |\n| pop_back | 尾部删除 |\n| insert | 指定位置插入 |\n| erase | 删除指定元素 |\n| clear | 清空所有元素 |\n| size | 获取元素个数 |\n| capacity | 获取容量 |\n| reserve | 预分配容量 |\n| resize | 改变大小 |\n\n## 5. 性能优化\n\n```cpp\nstd::vector<int> v;\nv.reserve(100);  // 预分配空间，避免多次扩容\n```\n\n## 6. 总结\n\nvector 是日常开发中最常用的容器，理解它的内存管理和扩容机制有助于写出更高效的代码。"
+  },
+  {
+    "id": 9,
+    "title": "strace 跟踪进程中的系统调用",
+    "date": "2026-06-10",
+    "category": "Linux",
+    "tags": [
+      "系统调用",
+      "Linux"
+    ],
+    "author": "博主",
+    "wordCount": 3477,
+    "readTime": 10,
+    "views": 0,
+    "summary": "# strace 跟踪进程中的系统调用\n\n## 一、概述\n\n`strace` 常用来跟踪进程执行时的**系统调用**和所接收的**信号**。\n\n在 Linux 世界，进程不能直接访问硬件设备，当进程需要访问硬件设备（比如读取磁盘文件、接收网络数据等）时，必须由用户态模式切换至内核态模式，通过系统调用访问硬件设备。`strace` 可以跟踪到一个进程产生的系统调用，包括参数、返回值、执行消耗的时间。",
+    "content": "# strace 跟踪进程中的系统调用\n\n## 一、概述\n\n`strace` 常用来跟踪进程执行时的**系统调用**和所接收的**信号**。\n\n在 Linux 世界，进程不能直接访问硬件设备，当进程需要访问硬件设备（比如读取磁盘文件、接收网络数据等）时，必须由用户态模式切换至内核态模式，通过系统调用访问硬件设备。`strace` 可以跟踪到一个进程产生的系统调用，包括参数、返回值、执行消耗的时间。\n\n---\n\n## 二、输出格式\n\n每一行都是一条系统调用，等号左边是系统调用的函数名及其参数，右边是该调用的返回值。\n\n`strace` 显示这些调用的参数并返回符号形式的值。`strace` 从内核接收信息，而且不需要以任何特殊的方式来构建内核。\n\n```bash\n$ strace cat /dev/null\nexecve(\"/bin/cat\", [\"cat\", \"/dev/null\"], [/* 22 vars */]) = 0\nbrk(0)                                  = 0xab1000\naccess(\"/etc/ld.so.nohwcap\", F_OK)      = -1 ENOENT (No such file or directory)\nmmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f29379a7000\naccess(\"/etc/ld.so.preload\", R_OK)      = -1 ENOENT (No such file or directory)\n...\n```\n\n---\n\n## 三、常用参数\n\n| 参数 | 说明 |\n|------|------|\n| `-c` | 统计每一系统调用的执行时间、次数和出错次数 |\n| `-d` | 输出 strace 关于标准错误的调试信息 |\n| `-f` | 跟踪由 `fork` 调用所产生的子进程 |\n| `-ff` | 如果提供 `-o filename`，则所有进程的跟踪结果输出到相应的 `filename.pid` 中 |\n| `-F` | 尝试跟踪 `vfork` 调用。在 `-f` 时，`vfork` 不被跟踪 |\n| `-h` | 输出简要的帮助信息 |\n| `-i` | 输出系统调用的入口指针 |\n| `-q` | 禁止输出关于脱离的消息 |\n| `-r` | 打印出相对时间关于每一个系统调用 |\n| `-t` | 在输出中的每一行前加上时间信息 |\n| `-tt` | 在输出中的每一行前加上时间信息，微秒级 |\n| `-ttt` | 微秒级输出，以秒数表示时间 |\n| `-T` | 显示每一调用所耗的时间 |\n| `-v` | 输出所有的系统调用。一些调用关于环境变量、状态、输入输出等调用由于使用频繁，默认不输出 |\n| `-V` | 输出 strace 的版本信息 |\n| `-x` | 以十六进制形式输出非标准字符串 |\n| `-xx` | 所有字符串以十六进制形式输出 |\n\n### 3.1 输出控制参数\n\n| 参数 | 说明 |\n|------|------|\n| `-a column` | 设置返回值的输出位置，默认 为 40 |\n| `-e expr` | 指定一个表达式，用来控制如何跟踪 |\n\n### 3.2 -e expr 表达式格式\n\n```\n[qualifier=][!]value1[,value2]...\n```\n\n`qualifier` 只能是 `trace`、`abbrev`、`verbose`、`raw`、`signal`、`read`、`write` 其中之一。\n\n**示例**：\n\n```bash\n-e open              # 等价于 -e trace=open\n-e trace!=open       # 跟踪除了 open 以外的其他调用\n-e trace=all         # 跟踪所有系统调用\n-e trace=none        # 不跟踪任何系统调用\n```\n\n**常用 trace 选项**：\n\n| 选项 | 说明 |\n|------|------|\n| `-e trace=open,close,read,write` | 只跟踪指定的四个系统调用 |\n| `-e trace=file` | 只跟踪有关文件操作的系统调用 |\n| `-e trace=process` | 只跟踪有关进程控制的系统调用 |\n| `-e trace=network` | 跟踪与网络有关的所有系统调用 |\n| `-e trace=signal` | 跟踪所有与系统信号有关的系统调用 |\n| `-e trace=ipc` | 跟踪所有与进程通讯有关的系统调用 |\n\n**其他 -e 选项**：\n\n| 选项 | 说明 |\n|------|------|\n| `-e abbrev=set` | 设定 strace 输出的系统调用的结果集。`-v` 等于 `abbrev=none`，默认为 `abbrev=all` |\n| `-e raw=set` | 将指定的系统调用的参数以十六进制显示 |\n| `-e signal=set` | 指定跟踪的系统信号。默认为 `all`，如 `signal=!SIGIO` 表示不跟踪 SIGIO 信号 |\n| `-e read=set` | 输出从指定文件中读出的数据，例如 `-e read=3,5` |\n| `-e write=set` | 输出写入到指定文件中的数据 |\n\n### 3.3 其他常用参数\n\n| 参数 | 说明 |\n|------|------|\n| `-o filename` | 将 strace 的输出写入文件 filename |\n| `-p pid` | 跟踪指定的进程 pid |\n| `-s strsize` | 指定输出的字符串的最大长度，默认为 32，文件名一直全部输出 |\n| `-u username` | 以 username 的 UID 和 GID 执行被跟踪的命令 |\n\n---\n\n## 四、命令实例\n\n### 4.1 跟踪可执行程序\n\n```bash\nstrace -f -F -o ~/straceout.txt myserver\n```\n\n- `-f -F`：同时跟踪 `fork` 和 `vfork` 出来的进程\n- `-o`：把所有 strace 输出写到 `~/straceout.txt` 里面\n- `myserver`：是要启动和调试的程序\n\n### 4.2 跟踪服务程序\n\n```bash\nstrace -o output.txt -T -tt -e trace=all -p 28979\n```\n\n- `-e trace=all`：跟踪 28979 进程的所有系统调用\n- `-T`：统计系统调用的花费时间\n- `-tt`：显示开始时间（以可视化的时分秒格式显示）\n- `-o output.txt`：将记录结果存在 `output.txt` 文件里面\n\n### 4.3 跟踪网络相关系统调用\n\n```bash\nstrace -e trace=network -p <pid>\n```\n\n### 4.4 跟踪文件操作\n\n```bash\nstrace -e trace=file -e read=3,5 -p <pid>\n```\n\n---\n\n## 五、常见用法速查\n\n| 场景 | 命令 |\n|------|------|\n| 跟踪新进程 | `strace ./program` |\n| 跟踪已有进程 | `strace -p <pid>` |\n| 统计系统调用 | `strace -c ./program` |\n| 显示时间消耗 | `strace -T ./program` |\n| 显示相对时间 | `strace -r ./program` |\n| 跟踪子进程 | `strace -f ./program` |\n| 输出到文件 | `strace -o output.txt ./program` |\n| 跟踪网络调用 | `strace -e trace=network ./program` |"
+  },
+  {
+    "id": 10,
+    "title": "MQTT 协议基础简介",
+    "date": "2026-06-10",
+    "category": "MQTT",
+    "tags": [
+      "MQTT学习"
+    ],
+    "author": "博主",
+    "wordCount": 6012,
+    "readTime": 10,
+    "views": 0,
+    "summary": "# MQTT 协议基础简介\n\n---\n\n## 一、MQTT 背景\n\nMQTT（Message Queuing Telemetry Transport，消息队列遥测传输）是 IBM 开发的一个 ISO 标准（ISO/IEC PRF 20922）下基于发布/订阅范式的消息协议。\n\nMQTT 协议可以以极少的代码和有限的带宽，为连接远程设备提供实时可靠的消息服务。\n\n由于 MQTT 协议具有轻量、简单、",
+    "content": "# MQTT 协议基础简介\n\n---\n\n## 一、MQTT 背景\n\nMQTT（Message Queuing Telemetry Transport，消息队列遥测传输）是 IBM 开发的一个 ISO 标准（ISO/IEC PRF 20922）下基于发布/订阅范式的消息协议。\n\nMQTT 协议可以以极少的代码和有限的带宽，为连接远程设备提供实时可靠的消息服务。\n\n由于 MQTT 协议具有轻量、简单、开放和易于实现等特点，这些特点使它适用范围非常广泛。\n\n- **MQTT 官网**: http://mqtt.org\n- **MQTT V3.1.1 协议规范**: http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html\n\n### 基础单位说明\n\n```\n1字节（Byte） = 8比特（bit）\n\nbit（比特，小写b）：\n   是计算机中最小的、最基本的数据单位。\n   它只有两种状态：0 或 1。你可以把它想象成一个只能开或关的开关。\n   一个 bit 能表示的信息量极少，仅仅是\"是/否\"、\"开/关\"、\"真/假\"、\"高/低电平\"这种二选一的情况。\n\nByte（字节，大写B）：\n   是计算机中最常用的、基本的数据处理单位。\n   它通常由8个bit组成。\n   为什么需要Byte？因为一个bit能表示的0或1信息量太少了，不足以表示一个实际的字符（比如字母'A'或数字'9'）。用8个bit组合在一起，就可以表示 2^8 = 256 种不同的信息，这足够用来编码英文大小写字母、数字、标点符号等（也就是ASCII码表）。\n```\n\n---\n\n## 二、MQTT 协议主要特性\n\n### MQTT 中的角色\n\n![MQTT 角色关系图](image/image.png)\n\n1. 使用发布/订阅消息模式，提供一对多的消息发布，解除应用程序耦合。\n2. 对负载内容屏蔽的消息传输。\n3. 使用 TCP/IP 提供网络连接。\n4. 有三种消息发布服务质量（QoS）：\n   - **QoS 0**：\"至多一次\"，消息发布完全依赖底层 TCP/IP 网络。会发生消息丢失或重复。适用于环境传感器数据传输，丢失一次读数记录也无所谓。\n   - **QoS 1**：\"至少一次\"，确保消息到达，但消息重复可能会发生。\n   - **QoS 2**：\"只有一次\"，确保消息到达一次。适用于计费系统等场景，消息重复或丢失会导致不正确的结果。\n5. 小型传输，开销很小（固定长度的头部是 2 字节），协议交换最小化，以降低网络流量。\n6. 使用 Last Will 和 Testament 特性通知有关各方客户端异常中断的机制。\n\n---\n\n## 三、MQTT 协议原理\n\n### MQTT 协议实现方式\n\n![MQTT 协议架构](image/image-1.png)\n\n实现 MQTT 协议需要客户端和服务器端通讯完成，在通讯过程中，MQTT 协议中有三种身份：\n\n| 角色 | 说明 |\n|------|------|\n| **发布者（Publish）** | 消息的发送方 |\n| **代理（Broker）** | 服务器，负责消息转发 |\n| **订阅者（Subscribe）** | 消息的接收方 |\n\n**注意**：\n- 消息的发布者和订阅者都是客户端\n- 消息代理是服务器\n- 消息发布者可以同时是订阅者\n\n### 消息组成\n\nMQTT 传输的消息分为两部分：\n\n1. **主题（Topic）**：消息的类型，类似于 URL 路径，通过 `/` 区分层级\n   - 示例：`chat/room/1`、`sensor/10/temperature`\n   - 支持通配符：`+`（单层）、`#`（多层）\n   \n2. **负载（Payload）**：消息的具体内容\n\n### 主题通配符\n\n| 通配符 | 说明 | 示例 |\n|--------|------|------|\n| `+` | 匹配单层主题 | `a/+` 匹配 `a/x` 或 `a/y` |\n| `#` | 匹配多层主题 | `a/#` 匹配 `a/x`、`a/b/c/d` |\n\n> **注意**：通配符主题只能用于订阅，不能用于发布。\n\n---\n\n## 四、MQTT 客户端\n\n一个使用 MQTT 协议的应用程序设备，它总是建立到服务器的网络连接。客户端可以：\n\n1. 发布其他客户端可能会订阅的信息\n2. 订阅其它客户端发布的消息\n3. 退订或删除应用程序的消息\n4. 断开与服务器连接\n\n---\n\n## 五、MQTT 服务器\n\nMQTT 服务器称为\"消息代理\"（Broker），位于消息发布者和订阅者之间。它可以：\n\n1. 接受来自客户的网络连接\n2. 接受客户发布的应用信息\n3. 处理来自客户端的订阅和退订请求\n4. 向订阅的客户转发应用程序消息\n\n---\n\n## 六、MQTT 协议中的订阅、主题、会话\n\n### 核心概念\n\n1. **订阅（Subscription）**：包含主题筛选器（Topic Filter）和最大服务质量（QoS）。订阅与一个会话关联，一个会话可以包含多个订阅。\n\n2. **会话（Session）**：每个客户端与服务器建立连接后就是一个会话，客户端和服务器之间有状态交互。\n\n### 相关术语\n\n| 术语 | 说明 |\n|------|------|\n| **主题名（Topic Name）** | 连接到应用程序消息的标签，与服务器的订阅相匹配 |\n| **主题筛选器（Topic Filter）** | 对主题名的通配符筛选器，用于订阅表达式 |\n| **负载（Payload）** | 消息订阅者所具体接收的内容 |\n\n---\n\n## 七、MQTT 协议中的方法\n\nMQTT 协议中定义了一些方法（动作），用于表示对确定资源所进行的操作：\n\n| 方法 | 说明 |\n|------|------|\n| **Connect** | 等待与服务器建立连接 |\n| **Disconnect** | 等待 MQTT 客户端完成工作，并与服务器断开 TCP/IP 会话 |\n| **Subscribe** | 等待完成订阅 |\n| **UnSubscribe** | 等待服务器取消客户端的一个或多个 topics 订阅 |\n| **Publish** | MQTT 客户端发送消息请求，发送完成后返回应用程序线程 |\n\n---\n\n## 八、MQTT 协议数据包结构\n\nMQTT 数据包由三部分构成：\n\n![MQTT 数据包结构](image/image-2.png)\n\n1. **固定头（Fixed header）**：存在于所有 MQTT 数据包中，表示数据包类型及分组标识\n2. **可变头（Variable header）**：存在于部分 MQTT 数据包中，内容因数据包类型而异\n3. **消息体（Payload）**：存在于部分 MQTT 数据包中，表示客户端收到的具体内容\n\n### 8.1 MQTT 固定头\n\n![MQTT 固定头结构](image/image-3.png)\n\n#### MQTT 数据包类型\n\n位置：Byte 1 中 bits 7-4，占 4 位无符号值。\n\n![MQTT 数据包类型](image/image-4.png)\n\n#### 标识位\n\n位置：Byte 1 中 bits 3-0。\n\n![MQTT 标识位](image/image-5.png)\n\n| 标识位 | 说明 |\n|--------|------|\n| **DUP** | 发布消息的副本标志，用于保证可靠传输 |\n| **QoS** | 服务质量等级（00/01/10/11） |\n| **RETAIN** | 保留标识，服务器保留推送信息供新订阅者使用 |\n\n#### 剩余长度（Remaining Length）\n\n地址：Byte 2。保存变长头部和消息体的总大小，采用可变长度编码。\n\n### 8.2 MQTT 可变头\n\n![MQTT 可变头](image/image-6.png)\n\n很多类型数据包中都包含一个 2 字节的数据包标识字段，包括：PUBLISH (QoS > 0)、PUBACK、PUBREC、PUBREL、PUBCOMP、SUBSCRIBE、SUBACK、UNSUBSCRIBE、UNSUBACK。\n\n### 8.3 Payload 消息体\n\n![MQTT 消息体](image/image-7.png)\n\nPayload 包含以下四种类型的消息：\n\n| 消息类型 | 内容 |\n|----------|------|\n| **CONNECT** | 客户端的 ClientID、订阅的 Topic、Message 以及用户名和密码 |\n| **SUBSCRIBE** | 要订阅的主题以及 QoS |\n| **SUBACK** | 服务器对 SUBSCRIBE 的确认和回复 |\n| **UNSUBSCRIBE** | 要取消订阅的主题 |\n\n---\n\n## 九、MQTT 一些特性\n\n### 9.1 连接属性\n\n#### Will Flag\n\n定义了客户端（没有主动发送 DISCONNECT 消息）出现网络异常导致连接中断时，服务器需要采取的措施。\n\n简而言之，就是客户端预先定义好的\"最后遗愿\"（Last Will），也称为遗嘱（Testament）。这个遗嘱是一个由客户端预先定义好的主题和对应消息，附加在 CONNECT 的可变头部中，在客户端连接出现异常的情况下，由服务器主动发布此消息。\n\n#### Will QoS\n\n两位表示，和 PUBLISH 消息固定头部的 QoS level 含义一样。若标识了 Will Flag 值为 1，那么 Will QoS 就会生效，否则会被忽略掉。\n\n#### Will RETAIN\n\n如果设置 Will Flag，Will Retain 标志就是有效的，否则它将被忽略。当客户端意外断开服务器发布其 Will Message 之后，服务器是否应该继续保存。\n\n#### 心跳时间（Keep Alive timer）\n\n以秒为单位，定义服务器端从客户端接收消息的最大时间间隔。16 位无符号值，最大值为 65535 秒（约 18 小时），最小值为 0（表示不断开）。\n\n#### 客户端断线流程\n\n1. 客户端主动发送 DISCONNECT 消息告知网关需要断线\n2. 网关不会清理已有订阅和遗嘱数据（除非 CleanSession=true）\n3. 网关返回 DISCONNECT 消息作为响应\n\n### 9.2 认证\n\nMQTT 支持两种层次的认证：\n\n| 层次 | 认证方式 |\n|------|----------|\n| **应用层** | 客户标识、用户名和密码认证 |\n| **传输层** | TLS 加密 + X509 证书认证 |\n\n#### 客户标识\n\nMQTT 客户端可以发送最多 65535 个字符作为客户标识（Client Identifier），一般使用嵌入式芯片的 MAC 地址或者芯片序列号。\n\n#### 用户名和密码\n\n通过 CONNECT 消息的 username 和 password 字段发送，以明文形式传输。\n\n#### 传输层认证\n\nMQTT 代理在 TLS 握手成功之后可以继续发送客户端的 X509 证书来认证设备。\n\n---\n\n## 附录\n\n- **MQTT 3.1 协议在线版本**：http://public.dhe.ibm.com/software/dw/webservices/ws-mqtt/mqtt-v3r1.html\n- **官方下载地址**：http://public.dhe.ibm.com/software/dw/webservices/ws-mqtt/MQTT_V3.1_Protocol_Specific.pdf\n\n![MQTT 协议架构图](image/image-8.png)\n\n---\n\n## 常见问题：MQTT 连接断开/连接失败\n\n1. **client_id 重复**：被服务器踢掉\n2. **keepalive 时间太大**：服务器超时没有收到客户端的 keepalive 包\n3. **username/password 错误**：connect ack 返回失败原因\n4. **时间戳不对**：导致密码计算错误\n5. **时间错误**：导致证书过期连接失败\n6. **SNI 扩展问题**：连接 AWS 需要添加 SNI 扩展\n7. **协议版本问题**：连接阿里云/微软云需要配置 v3.1.1\n8. **QoS 等级不支持**：订阅后被服务器断开\n\n---\n\n## 问题发现\n\n模组订阅一个 QoS 0 主题，不主动发消息；服务器周期性地向模组发送 QoS 0 的消息，超过 1.5 倍 keepalive 时间服务器会断开连接。\n\n---\n\n## STD 流程\n\n### OPEN 实现方式\n\n- `ql_mqtt_client_init()` 调用 `ql_mqtt_client_new()` 创建一个 mqttclient 对象，注册回调函数用于和用户交互\n- `ql_mqtt_connect()` 调用 `ql_mqtt_client_open()` 创建 socket 连接，连接成功后调用 `ql_mqtt_client_connect()` 发起连接\n\n![MQTT OPEN 流程](image/image-9.png)\n\n- `ql_mqtt_set_inpub_callback()` 注册接收数据的回调函数\n- `ql_mqtt_sub_unsub()` 调用 `ql_mqtt_client_unsubscribe()`/`ql_mqtt_client_subscribe()` 订阅或取消订阅\n- `ql_mqtt_publish()` 调用 `ql_mqtt_client_publish()` 向指定主题发送消息\n- `ql_mqtt_disconnect()` 调用 `ql_mqtt_client_disconnect()`/`ql_mqtt_client_close()` 断开连接\n- `ql_mqtt_client_deinit()` 清除 `ql_mqtt_client_init()` 申请的资源"
   }
 ]
