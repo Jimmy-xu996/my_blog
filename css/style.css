@@ -1558,3 +1558,217 @@ img {
     .hero-stats { gap: 20px; }
     .hero-search-input { width: 180px; }
 }
+
+/* ========== 专栏页面（参考爱编程大丙风格） ========== */
+.columns-page {
+    padding: 0 0 30px;
+}
+
+.columns-header {
+    text-align: center;
+    padding: 40px 20px 30px;
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    border-radius: 16px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+.columns-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.08) 0%, transparent 50%);
+    pointer-events: none;
+}
+.columns-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+.columns-subtitle {
+    font-size: 16px;
+    opacity: 0.9;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+.columns-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    position: relative;
+    z-index: 1;
+}
+.columns-stat-item {
+    text-align: center;
+}
+.columns-stat-num {
+    font-size: 28px;
+    font-weight: 700;
+}
+.columns-stat-label {
+    font-size: 13px;
+    opacity: 0.8;
+    margin-top: 2px;
+}
+
+/* 专栏卡片网格 */
+.columns-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+/* 单个专栏卡片 */
+.column-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
+    display: flex;
+    flex-direction: column;
+}
+.column-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+/* 卡片头部 */
+.column-card-header {
+    padding: 20px 24px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+}
+.column-card-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to top, rgba(0,0,0,0.08), transparent);
+    pointer-events: none;
+}
+.column-card-icon {
+    font-size: 28px;
+    position: relative;
+    z-index: 1;
+}
+.column-card-name {
+    font-size: 18px;
+    font-weight: 700;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+}
+.column-card-count {
+    font-size: 13px;
+    opacity: 0.9;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* 卡片内容 */
+.column-card-body {
+    padding: 20px 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.column-card-desc {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+/* 文章列表 */
+.column-card-posts {
+    flex: 1;
+    margin-bottom: 16px;
+}
+.column-card-post-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    text-decoration: none;
+    color: #334155;
+    font-size: 14px;
+    border-bottom: 1px dashed #e2e8f0;
+    transition: color 0.2s;
+}
+.column-card-post-item:last-child {
+    border-bottom: none;
+}
+.column-card-post-item:hover {
+    color: #4a6cf7;
+}
+.column-card-post-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    flex-shrink: 0;
+}
+.column-card-post-item:hover .column-card-post-dot {
+    background: #4a6cf7;
+}
+.column-card-post-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.column-card-post-date {
+    font-size: 12px;
+    color: #94a3b8;
+    flex-shrink: 0;
+}
+.column-card-empty {
+    color: #94a3b8;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* 查看更多 */
+.column-card-more {
+    display: inline-block;
+    text-align: center;
+    padding: 10px 0;
+    color: #4a6cf7;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-top: 1px solid #f1f5f9;
+    transition: color 0.2s;
+}
+.column-card-more:hover {
+    color: #3d5ce0;
+}
+
+/* 响应式 */
+@media (max-width: 900px) {
+    .columns-grid {
+        grid-template-columns: 1fr;
+    }
+    .columns-title {
+        font-size: 26px;
+    }
+    .columns-header {
+        padding: 30px 16px 24px;
+    }
+}

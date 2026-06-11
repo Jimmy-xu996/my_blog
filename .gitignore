@@ -1,3 +1,5 @@
 admin.html
 server.py
 start_server.sh
+server.log
+server.pid
