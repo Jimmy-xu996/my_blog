@@ -463,14 +463,14 @@ function renderNavbar(active) {
                             </div>
                         </div>
                     </div>
-                    <a href="/" class="nav-logo" title="回到首页">
+                    <a href="#" onclick="navigateTo('/'); return false;" class="nav-logo" title="回到首页">
                         <span class="logo-text">📚 技术博客</span>
                         <span class="logo-icon">🏠</span>
                     </a>
                 </div>
                 <div class="nav-center">
                     <ul class="nav-menu">
-                        <li><a href="/columns" class="${active === 'home' || active === 'columns' ? 'active' : ''}">专栏</a></li>
+                        <li><a href="/columns" class="${active === 'columns' ? 'active' : ''}">专栏</a></li>
                         <li><a href="/categories" class="${active === 'categories' ? 'active' : ''}">文章分类</a></li>
                         <li><a href="/tags" class="${active === 'tags' ? 'active' : ''}">标签</a></li>
                         <li><a href="/archive" class="${active === 'archive' ? 'active' : ''}">归档</a></li>
@@ -608,8 +608,8 @@ function renderPostCard(post) {
     `;
 }
 
-// 专栏页面（横幅 + 全部分类）
-async function renderColumnsPage() {
+// 首页（横幅 + 全部分类）
+async function renderHomePage() {
     const content = document.getElementById('content');
     
     // 加载首页配置
@@ -700,6 +700,68 @@ async function renderColumnsPage() {
             if (e.key === 'Enter') doHeroSearch();
         });
     }
+}
+
+// 专栏页面（参考爱编程大丙专栏风格）
+async function renderColumnsPage() {
+    const content = document.getElementById('content');
+    const stats = getStats(allPosts);
+
+    // 为每个分类构建专栏卡片
+    const columnCards = allCategories.map(cat => {
+        const count = typeof cat.postCount === 'number' ? cat.postCount : (stats.categories[cat.name] || 0);
+        const catPosts = allPosts.filter(p => p.category === cat.name).sort((a, b) => new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt));
+        const recentPosts = catPosts.slice(0, 3);
+
+        const recentPostsHtml = recentPosts.map(p => `
+            <a href="/post/${p.id}" class="column-card-post-item" title="${escapeHtml(p.title)}">
+                <span class="column-card-post-dot"></span>
+                <span class="column-card-post-title">${escapeHtml(p.title)}</span>
+                <span class="column-card-post-date">${formatDate(p.date || p.createdAt)}</span>
+            </a>
+        `).join('');
+
+        return `
+            <div class="column-card">
+                <div class="column-card-header" style="background: ${cat.color || '#667eea'}">
+                    <span class="column-card-icon">${escapeHtml(cat.icon || '📂')}</span>
+                    <span class="column-card-name">${escapeHtml(cat.name)}</span>
+                    <span class="column-card-count">${count} 篇</span>
+                </div>
+                <div class="column-card-body">
+                    ${cat.description ? `<p class="column-card-desc">${escapeHtml(cat.description)}</p>` : ''}
+                    <div class="column-card-posts">
+                        ${recentPostsHtml || '<p class="column-card-empty">暂无文章</p>'}
+                    </div>
+                    <a href="/category/${encodeURIComponent(cat.name)}" class="column-card-more">
+                        查看全部 →
+                    </a>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    content.innerHTML = `
+        <div class="columns-page">
+            <div class="columns-header">
+                <h1 class="columns-title">📚 专栏</h1>
+                <p class="columns-subtitle">系统化的技术学习路线，从入门到精通</p>
+                <div class="columns-stats">
+                    <div class="columns-stat-item">
+                        <span class="columns-stat-num">${allCategories.length}</span>
+                        <span class="columns-stat-label">专栏</span>
+                    </div>
+                    <div class="columns-stat-item">
+                        <span class="columns-stat-num">${allPosts.length}</span>
+                        <span class="columns-stat-label">文章</span>
+                    </div>
+                </div>
+            </div>
+            <div class="columns-grid">
+                ${columnCards}
+            </div>
+        </div>
+    `;
 }
 
 // Hero 搜索
@@ -1893,6 +1955,8 @@ function router() {
     
     switch (page) {
         case 'home':
+            renderHomePage();
+            break;
         case 'columns':
             renderColumnsPage();
             break;

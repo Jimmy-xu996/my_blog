@@ -342,33 +342,72 @@ async function handleLoginSubmit(event) {
 
 /** 处理退出登录 */
 async function handleLogout() {
-    if (!confirm('确定要退出登录吗？')) return;
-    
-    // 停止所有定时刷新，防止退出后触发401循环
-    if (window._statsInterval) {
-        clearInterval(window._statsInterval);
-        window._statsInterval = null;
-    }
-    if (window._dataInterval) {
-        clearInterval(window._dataInterval);
-        window._dataInterval = null;
-    }
-    
-    // 调用 logout API（让服务器清除会话）
     try {
-        await fetch('/api/auth/logout', {
-            method: 'DELETE',
-            headers: {
-                'Authorization': 'Bearer ' + getAuthToken(),
-                'Cache-Control': 'no-cache'
+        if (!confirm('确定要退出登录吗？')) return;
+        
+        // 停止所有定时刷新，防止退出后触发401循环
+        try {
+            if (window._statsInterval) {
+                clearInterval(window._statsInterval);
+                window._statsInterval = null;
             }
-        });
+            if (window._dataInterval) {
+                clearInterval(window._dataInterval);
+                window._dataInterval = null;
+            }
+            if (window._refreshInterval) {
+                clearInterval(window._refreshInterval);
+                window._refreshInterval = null;
+            }
+        } catch (e) {
+            console.warn('清除定时器失败:', e);
+        }
+        
+        // 调用 logout API（让服务器清除会话）
+        try {
+            const token = getAuthToken();
+            if (token) {
+                await fetch('/api/auth/logout', {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+            }
+        } catch (e) {
+            console.warn('退出登录 API 调用失败:', e);
+        } finally {
+            // 确保清除本地会话
+            try {
+                clearAuthSession();
+            } catch (e) {
+                console.error('清除认证会话失败:', e);
+            }
+            
+            // 显示登录界面
+            try {
+                showLoginUI();
+            } catch (e) {
+                console.error('显示登录界面失败:', e);
+            }
+            
+            // 显示提示
+            try {
+                showToast('已退出登录', 'info');
+            } catch (e) {
+                console.error('显示提示失败:', e);
+            }
+        }
     } catch (e) {
-        console.warn('退出登录 API 调用失败:', e);
-    } finally {
-        clearAuthSession();
-        showLoginUI();
-        showToast('已退出登录', 'info');
+        console.error('退出登录过程发生未预期错误:', e);
+        // 确保最终进入登录状态
+        try {
+            clearAuthSession();
+            showLoginUI();
+        } catch (finalError) {
+            console.error('最终清理也失败:', finalError);
+        }
     }
 }
 
