@@ -49,6 +49,13 @@
     "sortOrder": 7
   },
   {
+    "id": 22,
+    "name": "makefile",
+    "description": "makefile学习",
+    "color": "#10b981",
+    "sortOrder": 8
+  },
+  {
     "id": 21,
     "name": "线程同步",
     "description": "",
@@ -82,12 +89,5 @@
     "description": "",
     "color": "#10b981",
     "sortOrder": 13
-  },
-  {
-    "id": 22,
-    "name": "makefile",
-    "description": "makefile学习",
-    "color": "#10b981",
-    "sortOrder": 8
   }
 ]
