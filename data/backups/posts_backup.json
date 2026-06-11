@@ -13,8 +13,10 @@
     "views": 15620,
     "summary": "本文将带领你从零开始学习 C++，了解 C++ 的发展历史、语言特点，并编写你的第一个 C++ 程序。无论你是编程小白还是从其他语言转过来的开发者，都能在这篇文章中找到入门的方向。",
     "content": "# C++入门指南\n\n## 1. C++ 概述\n\nC++ 是一种通用的高级编程语言，由 Bjarne Stroustrup 于 1979 年在贝尔实验室开始设计开发。它是 C 语言的扩展，增加了面向对象、泛型编程等特性。\n\n### 1.1 C++ 的特点\n\n- **高效性**：C++ 是一种编译型语言，运行效率极高\n- **跨平台**：支持 Windows、Linux、macOS 等多平台\n- **面向对象**：支持封装、继承、多态三大特性\n- **泛型编程**：通过模板实现类型无关的编程\n- **标准库丰富**：STL 提供了大量常用数据结构和算法\n\n### 1.2 开发环境搭建\n\n在 Linux 下，可以通过以下命令安装 g++ 编译器：\n\n```bash\nsudo apt update\nsudo apt install g++\n```\n\n安装完成后，可以通过 `g++ --version` 查看版本。\n\n## 2. 第一个 C++ 程序\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Hello, World!\" << endl;\n    return 0;\n}\n```\n\n### 2.1 编译运行\n\n```bash\ng++ hello.cpp -o hello\n./hello\n```\n\n输出：`Hello, World!`\n\n### 2.2 代码解析\n\n- `#include <iostream>`：包含输入输出流头文件\n- `using namespace std;`：使用标准命名空间\n- `int main()`：程序入口函数\n- `cout`：标准输出流对象\n- `endl`：换行符\n\n## 3. 基本数据类型\n\n| 类型 | 大小 | 说明 |\n|------|------|------|\n| int | 4字节 | 整型 |\n| float | 4字节 | 单精度浮点型 |\n| double | 8字节 | 双精度浮点型 |\n| char | 1字节 | 字符型 |\n| bool | 1字节 | 布尔型 |\n\n## 4. 总结\n\n通过本文的学习，你应该已经掌握了 C++ 的基础环境搭建和第一个程序的编写。在后续的文章中，我们将继续深入学习 C++ 的更多特性。",
-    "likes": 0,
-    "liked_by": []
+    "likes": 1,
+    "liked_by": [
+      "127.0.0.1"
+    ]
   },
   {
     "id": 2,
